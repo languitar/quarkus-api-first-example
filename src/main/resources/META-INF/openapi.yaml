@@ -4,8 +4,8 @@ info:
   title: Swagger Petstore
   license:
     name: MIT
-servers:
-  - url: http://petstore.swagger.io/v1
+# We delegate the task of providing the correct server value to Quarkus so that we don't have to declare the dev mode here.
+servers: []
 paths:
   /pets:
     get:
