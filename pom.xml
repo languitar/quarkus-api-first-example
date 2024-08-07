@@ -167,6 +167,40 @@
                     </pluginOptions>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.7.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- The source path is the default one used by the quarkus-smallrye-openapi extension for serving static specifications.-->
+                            <inputSpec>${project.basedir}/src/main/resources/META-INF/openapi.yaml</inputSpec>
+                            <generatorName>kotlin-server</generatorName>
+                            <!-- Use some reasonable coordinates for the generated source code. In this case, the target package assumes a hexagonal architecture. -->
+                            <modelPackage>${project.groupId}.adapters.rest</modelPackage>
+                            <apiPackage>${project.groupId}.adapters.rest</apiPackage>
+                            <!-- No need to generate a full project. We only use the models and API interfaces. -->
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <sourceFolder>src/kotlin/main</sourceFolder>
+                                <!-- Quarkus uses JAX-RS. So we need to generate for that target. -->
+                                <library>jaxrs-spec</library>
+                                <useJakartaEe>true</useJakartaEe>
+                                <!-- We do not want to touch the generated source code. Therefore, we generate interfaces such that we can implement the routes in non-generated sources. -->
+                                <interfaceOnly>true</interfaceOnly>
+                                <!-- We live in Kotlin, where many libraries are based on coroutines. Therefore, make it easy to use these libraries. -->
+                                <useCoroutines>true</useCoroutines>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
