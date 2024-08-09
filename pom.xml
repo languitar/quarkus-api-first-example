@@ -196,6 +196,8 @@
                                 <interfaceOnly>true</interfaceOnly>
                                 <!-- We live in Kotlin, where many libraries are based on coroutines. Therefore, make it easy to use these libraries. -->
                                 <useCoroutines>true</useCoroutines>
+                                <!-- Usually, at some point you also need to control response headers, which is not possible without letting routes return Response instances. Unfortunately, this breaks type-safety guarantees for endpoints already provided by the kotlin compiler. -->
+                                <returnResponse>true</returnResponse>
                             </configOptions>
                         </configuration>
                     </execution>

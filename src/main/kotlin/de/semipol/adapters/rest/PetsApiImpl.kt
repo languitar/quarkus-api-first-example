@@ -1,16 +1,18 @@
 package de.semipol.adapters.rest
 
-class PetsApiImpl: PetsApi {
+import jakarta.ws.rs.core.Response
 
-    override suspend fun createPets(pet: Pet) {
+class PetsApiImpl : PetsApi {
+
+    override suspend fun createPets(pet: Pet): Response {
         TODO("Not yet implemented")
     }
 
-    override suspend fun listPets(limit: Int?): List<Pet> {
+    override suspend fun listPets(limit: Int?): Response {
         TODO("Not yet implemented")
     }
 
-    override suspend fun showPetById(petId: String): Pet {
+    override suspend fun showPetById(petId: String): Response {
         TODO("Not yet implemented")
     }
 }
