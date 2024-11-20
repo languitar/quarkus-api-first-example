@@ -72,7 +72,7 @@ paths:
           required: true
           description: The id of the pet to retrieve
           schema:
-            type: string
+            $ref: "#/components/schemas/PetId"
       responses:
         '200':
           description: Expected response to a valid request
@@ -88,6 +88,9 @@ paths:
                 $ref: "#/components/schemas/Error"
 components:
   schemas:
+    PetId:
+      type: integer
+      format: int64
     Pet:
       type: object
       required:
@@ -95,8 +98,7 @@ components:
         - name
       properties:
         id:
-          type: integer
-          format: int64
+          $ref: "#/components/schemas/PetId"
         name:
           type: string
         tag:
