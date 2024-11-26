@@ -3,7 +3,9 @@ package de.semipol
 import de.semipol.adapters.rest.Error
 import de.semipol.adapters.rest.Pet
 import de.semipol.domain.PetRepository
+import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
+import io.restassured.RestAssured
 import io.restassured.common.mapper.TypeRef
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
+@QuarkusTestResource(PrismProxyResource::class)
 class PetsApiTest {
 
     @Inject
@@ -28,6 +31,12 @@ class PetsApiTest {
     @BeforeEach
     fun clearRepo() {
         petRepository.clear()
+    }
+
+    @BeforeEach
+    fun beforeEach() {
+        RestAssured.port = PrismProxyResource.proxyPort()
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
     @Nested
