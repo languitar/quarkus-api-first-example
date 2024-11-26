@@ -3,7 +3,9 @@ package de.semipol
 import de.semipol.adapters.rest.Error
 import de.semipol.adapters.rest.Pet
 import de.semipol.domain.PetRepository
+import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
+import io.restassured.RestAssured
 import io.restassured.common.mapper.TypeRef
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
@@ -20,6 +22,8 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
+// We need the prism proxy running to validate against it
+@QuarkusTestResource(PrismProxyResource::class)
 class PetsApiTest {
 
     @Inject
@@ -28,6 +32,16 @@ class PetsApiTest {
     @BeforeEach
     fun clearRepo() {
         petRepository.clear()
+    }
+
+    @BeforeEach
+    fun beforeEach() {
+        // REST-assured needs to be instructed to used prsim for requests instead of talking to the app directly.
+        // Unfortunately, this has to be done before each test case as the Quarkus infrastructure automatically
+        // overwrites this setting for each test case, too.
+        RestAssured.port = PrismProxyResource.proxyPort()
+        // When REST-assured validations fail, we want to see the details of why
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
     @Nested
